@@ -1,8 +1,8 @@
-import React from 'react';
+// import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import { useState } from 'react';
+import { useState, FC } from 'react';
 import ProductCard from './product/product-card';
 
 import { /* people, */ products } from './data';
@@ -107,7 +107,7 @@ function Board() {
 //   return null;
 // }
 
-const BarcodeScanner: React.FC<any> = ({
+const BarcodeScanner: FC<any> = ({
   onResult = (res: any) => {},
   onError = (err: any) => {},
 }) => {
@@ -118,14 +118,18 @@ const BarcodeScanner: React.FC<any> = ({
 
 function MyApp() {
   const name = 'Coelho';
-  const [isError, setIsError] = useState(false);
-  const [cart, setCart]: [cart: string[], setCart: any] = useState([]);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [cart, setCart] = useState<string[]>([]);
 
   const onResult = (res: any) => {
-    console.log('res', res);
-    const nextCart: string[] = cart.slice();
+    console.log('res', res?.text);
+    // const nextCart: string[] = cart.slice();
+    // setCart(nextCart);
+    console.log('cart', cart);
+    const nextCart: string[] = Object.assign([], cart);
     nextCart.push(res?.text);
-    setCart(nextCart);
+    console.log('nextCart', nextCart);
+    setCart(prevCart => [res?.text, ...prevCart])
   };
   const onError = (err: any) => {
     // console.log('err', err);
