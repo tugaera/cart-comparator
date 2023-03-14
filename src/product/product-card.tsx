@@ -2,13 +2,13 @@ import React from "react";
 
 import { getImageUrl } from './../utils';
 
-const person = {
-  name: 'Gregorio Y. Zara',
-  theme: {
-    backgroundColor: 'black',
-    color: 'pink'
-  }
-};
+// const person = {
+//   name: 'Gregorio Y. Zara',
+//   theme: {
+//     backgroundColor: 'black',
+//     color: 'pink'
+//   }
+// };
 
 export default function ProductCard({product, productClick}: {product: any, productClick: any}) {
 
