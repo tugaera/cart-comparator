@@ -1,6 +1,6 @@
 import React from "react";
 
-import { getImageUrl } from './../utils.js';
+import { getImageUrl } from './../utils';
 
 const person = {
   name: 'Gregorio Y. Zara',
@@ -10,7 +10,7 @@ const person = {
   }
 };
 
-export default function ProductCard({product, productClick}) {
+export default function ProductCard({product, productClick}: {product: any, productClick: any}) {
 
     // const [value, setValue] = useState(null);
 
