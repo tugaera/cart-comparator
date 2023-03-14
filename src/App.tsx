@@ -8,6 +8,7 @@ import ProductCard from './product/product-card';
 import { /* people, */ products } from './data';
 // import { getImageUrl } from './utils';
 import { useZxing } from './barcode-scanner/barcode-scanner';
+import { CartRow } from './models/cart';
 
 function App() {
   return (
@@ -119,7 +120,7 @@ const BarcodeScanner: FC<any> = ({
 function MyApp() {
   const name = 'Coelho';
   const [isError, setIsError] = useState<boolean>(false);
-  const [cart, setCart] = useState<string[]>([]);
+  const [cart, setCart] = useState<CartRow[]>([{ean: '11111', price: 0}]);
 
   const onResult = (res: any) => {
     console.log('res', res?.text);
@@ -129,7 +130,11 @@ function MyApp() {
     const nextCart: string[] = Object.assign([], cart);
     nextCart.push(res?.text);
     console.log('nextCart', nextCart);
-    setCart(prevCart => [res?.text, ...prevCart])
+    const row: CartRow = {
+      ean: res?.text,
+      price: 0
+    };
+    setCart(prevCart => [row, ...prevCart])
   };
   const onError = (err: any) => {
     // console.log('err', err);
@@ -138,17 +143,39 @@ function MyApp() {
   }
 
   const { ref } = useZxing({ onResult, onError });
-  
-  
+
+  const handleOnChange = (e: any, item: CartRow) => {
+    setCart((prevCart: CartRow[]) => {
+      const line: number = prevCart.findIndex(c => c.ean === item.ean);
+      if (line > -1) {
+        prevCart[line].price = e.target.value;
+        return [
+          ...prevCart, // <-- copy previous state
+          // [spec]: e.target.value, // <-- overwrite specific spec key
+        ];
+      }
+      return prevCart;
+    })
+  }
+
+  function calculateTotal(): number {
+    let total: number = 0;
+    for (const row of cart) {
+      total = total + Number(row.price);
+    }
+    return total;
+  }
 
   return (
     <>
       <video ref={ref} />
       <h1>Shopping List for {name} - {cart.length} - {isError ? 'ERROR' : 'SUCCESS'}</h1>
+      Total: {calculateTotal()}
       <ul>
         {cart.map((line, index) =>
           <li key={index}>
-            {line}
+            {line.ean}
+            <input type="number" value={line.price} onChange={(e) => handleOnChange(e, line)}/>
           </li>
         )}
       </ul>
