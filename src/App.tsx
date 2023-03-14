@@ -124,7 +124,7 @@ function MyApp() {
   const onResult = (res: any) => {
     console.log('res', res);
     const nextCart: string[] = cart.slice();
-    nextCart.push(res);
+    nextCart.push(res?.text);
     setCart(nextCart);
   };
   const onError = (err: any) => {
