@@ -5,7 +5,7 @@ import './App.css';
 import { useState } from 'react';
 import ProductCard from './product/product-card';
 
-// import { people, products } from './data';
+import { /* people, */ products } from './data';
 // import { getImageUrl } from './utils';
 import { useZxing } from './barcode-scanner/barcode-scanner';
 
